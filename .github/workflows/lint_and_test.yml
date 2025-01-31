@@ -1,0 +1,36 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test-linux:
+    name: Test Linux
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Set up Poetry
+      uses: abatilo/actions-poetry@v4
+
+    - name: Install Poetry
+      run: poetry install
+    - uses: actions/cache@v3
+      name: Define a cache for the virtual environment based on the dependencies lock file
+      with:
+        path: ./.venv
+        key: venv-${{ hashFiles('poetry.lock') }}
+
+    - name: Install project
+      run: poetry install
+
+    - name: Run lint
+      run: poetry run lint
+
+    - name: Run tests
+      run: poetry run pytest  --cov=crossmint --cov-fail-under=100
