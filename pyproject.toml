@@ -1,0 +1,83 @@
+[build-system]
+requires = ["poetry-core", ]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "crossmint"
+version = "1.0.0"
+authors = ["Álvaro Peris"]
+description = "Crossmint Coding Challenge"
+
+packages = [
+    { include = "scripts" }
+]
+
+[tool.poetry.scripts]
+lint = "scripts.lint:main"
+solve = "commands.solve:solve"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+mypy = "^1.14.1"
+ruff = "^0.9.3"
+flake8 = "^7.1.1"
+python-dotenv = "^1.0.1"
+pydantic = "^2.10.6"
+requests = "^2.32.3"
+types-requests = "^2.32.0.20241016"
+tenacity = "^9.0.0"
+tqdm = "^4.67.1"
+pytest = "^8.3.4"
+requests-mock = "^1.12.1"
+pytest-cov = "^6.0.0"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["F", "I", "E", "TCH", "UP"]
+ignore = []
+exclude = [
+    "doc/",
+    ".venv/",
+]
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+fixable = ["ALL"]
+unfixable = []
+
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.coverage.run]
+omit = [
+    "*/settings/*",
+    "*/migrations/*",
+    ".venv/*",
+    "*/tests/*",
+    "*/scripts/*",
+    "*/*/codegen/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    ".__instance is None:",
+    "@abstract",
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
